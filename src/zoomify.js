@@ -121,6 +121,7 @@ export default class Zoomify {
             elm.parentElement.style.removeProperty('display');
             elm.parentElement.style.removeProperty('overflow');
             elm.style.removeProperty('transition');
+            elm.removeAttribute('data-src');
           }, this.config.transitionDuration);
         }
       }
@@ -191,11 +192,9 @@ export default class Zoomify {
 
   mouseOut(e) {
     const elm = e.target;
-    console.log(elm);
     setTimeout(() => {
       if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
         elm.attributes.src.value = elm.attributes['data-src'].value;
-        elm.removeAttribute('data-src');
       }
     }, this.config.transitionDuration);
   }
