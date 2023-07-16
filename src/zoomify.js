@@ -36,15 +36,19 @@ export default class Zoomify {
   }
 
   zoomIn() {
-    const elm = document.querySelector(this.selector);
-    // default style first to avoid jerk on first click on mobile
-    elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
-    this.focusZoom({ target: elm }, true);
+    const elements = document.querySelectorAll(this.selector);
+    elements.forEach(elm => {
+      // default style first to avoid jerk on first click on mobile
+      elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
+      this.focusZoom({ target: elm }, true);
+    });
   }
 
   zoomOut() {
-    const elm = document.querySelector(this.selector);
-    this.focusZoomOut({ target: elm });
+    const elements = document.querySelectorAll(this.selector);
+    elements.forEach(elm => {
+      this.focusZoomOut({ target: elm });
+    });
   }
 
   enableZoom(value) {
@@ -53,60 +57,62 @@ export default class Zoomify {
   }
 
   setZoomEvents(detach = false) {
-    const elm = document.querySelector(this.selector)
+    const elements = document.querySelectorAll(this.selector);
 
-    ;['touchstart'].forEach(name => {
+    elements.forEach(elm => {
+      ['touchstart'].forEach(name => {
+        if (detach) {
+          elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
+        }
+        else {
+          elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
+        }
+      })
+      ;['mousemove', 'touchmove'].forEach(name => {
+        if (detach) {
+          elm.removeEventListener(name, this.handleFocusZoom);
+        }
+        else {
+          elm.addEventListener(name, this.handleFocusZoom, { passive: true });
+        }
+      })
+      ;['mouseleave'].forEach(name => {
+        if (detach) {
+          elm.removeEventListener(name, this.handleFocusZoomOut);
+        }
+        else {
+          elm.addEventListener(name, this.handleFocusZoomOut, {
+            passive: true,
+          });
+        }
+      });
       if (detach) {
-        elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
+        this.focusZoomOut({ target: elm });
+        elm.removeEventListener('contextmenu', this.preventContextMenu);
+        if (
+          elm.tagName === 'IMG' &&
+            elm.parentElement.tagName === 'PICTURE'
+        ) {
+          setTimeout(() => {
+            elm.parentElement.style.removeProperty('display');
+            elm.parentElement.style.removeProperty('overflow');
+            elm.style.removeProperty('transition');
+          }, this.config.transitionDuration);
+        }
       }
       else {
-        elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
-      }
-    })
-    ;['mousemove', 'touchmove'].forEach(name => {
-      if (detach) {
-        elm.removeEventListener(name, this.handleFocusZoom);
-      }
-      else {
-        elm.addEventListener(name, this.handleFocusZoom, { passive: true });
-      }
-    })
-    ;['mouseleave'].forEach(name => {
-      if (detach) {
-        elm.removeEventListener(name, this.handleFocusZoomOut);
-      }
-      else {
-        elm.addEventListener(name, this.handleFocusZoomOut, {
-          passive: true,
-        });
+        elm.addEventListener('contextmenu', this.preventContextMenu);
+        elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
+        if (
+          elm.tagName === 'IMG' &&
+            elm.parentElement.tagName === 'PICTURE'
+        ) {
+          elm.parentElement.style.display = 'block';
+          elm.parentElement.style.overflow = 'hidden';
+        }
+        elm.zoomify = this;
       }
     });
-    if (detach) {
-      this.focusZoomOut({ target: elm });
-      elm.removeEventListener('contextmenu', this.preventContextMenu);
-      if (
-        elm.tagName === 'IMG' &&
-            elm.parentElement.tagName === 'PICTURE'
-      ) {
-        setTimeout(() => {
-          elm.parentElement.style.removeProperty('display');
-          elm.parentElement.style.removeProperty('overflow');
-          elm.style.removeProperty('transition');
-        }, this.config.transitionDuration);
-      }
-    }
-    else {
-      elm.addEventListener('contextmenu', this.preventContextMenu);
-      elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
-      if (
-        elm.tagName === 'IMG' &&
-            elm.parentElement.tagName === 'PICTURE'
-      ) {
-        elm.parentElement.style.display = 'block';
-        elm.parentElement.style.overflow = 'hidden';
-      }
-    }
-    // document.querySelector(this.selector).zoomify = this
   }
 
   preventContextMenu(e) {
@@ -151,6 +157,9 @@ export default class Zoomify {
     this.zoomedIn = false;
   }
 
+  /**
+   * Todo: try to implement destroy zoomify instance for individual elements.
+   */
   destroy() {
     this.zoomOut();
     this.setZoomEvents(true);
