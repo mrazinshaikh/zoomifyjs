@@ -3,20 +3,16 @@
   "private": true,
   "version": "0.1.0",
   "description": "lightweight plugin for image zoom functionality",
-  "main": "src/zoomify.ts",
+  "main": "./dist/zoomify.mjs",
   "scripts": {
-    "build": "webpack",
-    "dev": "webpack --progress --colors --watch"
+    "build": "eslint --fix src/zoomify.js && vite build",
+    "dev": "vite build --watch"
   },
   "devDependencies": {
-    "babel": "^6.23.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-preset-es2015": "^6.24.1",
     "eslint": "4.16.0",
     "eslint-loader": "^1.9.0",
-    "webpack": "3.10.0"
+    "rollup-plugin-terser": "^7.0.2",
+    "vite": "^4.4.4"
   },
   "repository": "mrazinshaikh/zoomify",
   "author": "M Razin Shaikh",
