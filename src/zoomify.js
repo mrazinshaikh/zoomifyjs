@@ -12,6 +12,8 @@ export default class Zoomify {
     this.resolveConfig(options);
     this.handleFocusZoom = e => this.focusZoom.call(this, e);
     this.handleFocusZoomOut = e => this.focusZoomOut.call(this, e);
+    this.handleMouseEnter = e => this.mouseEnter.call(this, e);
+    this.handleMouseOut = e => this.mouseOut.call(this, e);
 
     this.init();
   }
@@ -19,7 +21,8 @@ export default class Zoomify {
   resolveConfig(options) {
     const settings = {
       transitionDuration: 300,
-      easing: 'ease-in-out'
+      easing: 'ease-in-out',
+      scale: 2
     };
 
     const userSettings = options;
@@ -60,12 +63,33 @@ export default class Zoomify {
     const elements = document.querySelectorAll(this.selector);
 
     elements.forEach(elm => {
+      if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
+        // To Preload image
+        const zoomImg = new Image();
+        zoomImg.src = elm.attributes.zoomify.value;
+      }
       ['touchstart'].forEach(name => {
         if (detach) {
           elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
         }
         else {
           elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
+        }
+      })
+      ;['mouseenter'].forEach(name => {
+        if (detach) {
+          elm.removeEventListener(name, this.handleMouseEnter);
+        }
+        else {
+          elm.addEventListener(name, this.handleMouseEnter, { passive: true });
+        }
+      })
+      ;['mouseout'].forEach(name => {
+        if (detach) {
+          elm.removeEventListener(name, this.handleMouseOut);
+        }
+        else {
+          elm.addEventListener(name, this.handleMouseOut, { passive: true });
         }
       })
       ;['mousemove', 'touchmove'].forEach(name => {
@@ -143,7 +167,7 @@ export default class Zoomify {
     if (!force && !Zoomify.inBoundaries(imgRect, pageX, pageY)) { return; }
     const offsetX = ((pageX - imgRect.left) / imgRect.width) * 100;
     const offsetY = ((pageY - imgRect.top) / imgRect.height) * 100;
-    img.style.scale = 1.6;
+    img.style.scale = this.config.scale;
     img.style.transformOrigin = `${offsetX}% ${offsetY}%`;
     this.zoomedIn = true;
   }
@@ -155,6 +179,25 @@ export default class Zoomify {
       img.style.removeProperty('transform-origin');
     }, this.config.transitionDuration);
     this.zoomedIn = false;
+  }
+
+  mouseEnter(e) {
+    const elm = e.target;
+    if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
+      elm.setAttribute('data-src', elm.attributes.src.value);
+      elm.attributes.src.value = elm.attributes.zoomify.value;
+    }
+  }
+
+  mouseOut(e) {
+    const elm = e.target;
+    console.log(elm);
+    setTimeout(() => {
+      if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
+        elm.attributes.src.value = elm.attributes['data-src'].value;
+        elm.removeAttribute('data-src');
+      }
+    }, this.config.transitionDuration);
   }
 
   /**
