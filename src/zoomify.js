@@ -4,11 +4,8 @@ export default class Zoomify {
     this.config = {};
     this.selector = selector;
 
-    // flag to check if zoom enabled or not
-    this.zoom = false;
-
     // to check if zoomed in or not
-    this.zoomedIn = false;
+    // this.zoomedIn = false;
     this.resolveConfig(options);
     this.handleFocusZoom = e => this.focusZoom.call(this, e);
     this.handleFocusZoomOut = e => this.focusZoomOut.call(this, e);
@@ -22,7 +19,8 @@ export default class Zoomify {
     const settings = {
       transitionDuration: 300,
       easing: 'ease-in-out',
-      scale: 2
+      scale: 2,
+      clickToZoom: true
     };
 
     const userSettings = options;
@@ -35,7 +33,49 @@ export default class Zoomify {
   }
 
   init() {
-    this.setZoomEvents();
+    if (this.config.clickToZoom) {
+      const elements = document.querySelectorAll(this.selector);
+      elements.forEach(elm => {
+        elm.zoomify = this;
+        const btn = document.createElement('button');
+        btn.setAttribute('id', 'zoomify-click-to-zoom');
+        btn.style.border = 0;
+        btn.style.background = 'rgba(0,0,0, 0.5)';
+        btn.style.padding = '10px';
+        btn.style.paddingLeft = '15px';
+        btn.style.paddingRight = '15px';
+        btn.style.borderRadius = '20px';
+        btn.style.position = 'absolute';
+        btn.style.bottom = '15px';
+        btn.style.zIndex = 10;
+        btn.style.left = 0;
+        btn.style.right = 0;
+        btn.style.width = 'max-content';
+        btn.style.color = 'white';
+        btn.style.margin = '0 auto';
+        elm.style.cursor = 'zoom-in';
+        btn.textContent = 'Click to zoom';
+        btn.style.pointerEvents = 'none';
+        elm.parentElement.style.position = 'relative';
+
+        elm.parentElement.appendChild(btn);
+
+        elm.addEventListener('click', e => {
+          const currentZoomedIn = this.zoomedIn;
+          this.zoomedIn = !this.zoomedIn;
+          this.setZoomEvents(currentZoomedIn);
+
+          // to fix image change before zoom
+          this.mouseEnter(e);
+
+          btn.style.display = currentZoomedIn ? 'block' : 'none';
+        });
+      });
+
+    }
+    else {
+      this.setZoomEvents();
+    }
   }
 
   zoomIn() {
@@ -63,6 +103,7 @@ export default class Zoomify {
     const elements = document.querySelectorAll(this.selector);
 
     elements.forEach(elm => {
+      elm.zoomify = this;
       if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
         // To Preload image
         const zoomImg = new Image();

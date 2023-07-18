@@ -7,6 +7,7 @@ export default defineConfig({
       entry: './src/zoomify.js',
       name: 'Zoomify',
     },
+    minify: true,
     rollupOptions: {
       output: {
         format: ['es', 'umd'],
