@@ -37,9 +37,18 @@ export default class Zoomify {
     return settings;
   }
 
+  /**
+   * @returns {HTMLElement};
+   */
+  getElement() {
+    return this.element || (this.element = document.querySelector(this.config.selector));
+  }
+
   init() {
+    const elm = this.getElement();
+    elm.style.cursor = 'zoom-in';
+
     if (this.config.clickToZoom) {
-      const elm = document.querySelector(this.config.selector);
       elm.zoomify = this;
       const btn = document.createElement('button');
       btn.setAttribute('id', 'zoomify-click-to-zoom');
@@ -57,7 +66,6 @@ export default class Zoomify {
       btn.style.width = 'max-content';
       btn.style.color = 'white';
       btn.style.margin = '0 auto';
-      elm.style.cursor = 'zoom-in';
       btn.textContent = 'Click to zoom';
       btn.style.pointerEvents = 'none';
       elm.parentElement.style.position = 'relative';
@@ -82,14 +90,14 @@ export default class Zoomify {
   }
 
   zoomIn() {
-    const elm = document.querySelector(this.config.selector);
+    const elm = this.getElement();
     // default style first to avoid jerk on first click on mobile
     elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
     this.focusZoom({ target: elm }, true);
   }
 
   zoomOut() {
-    const elm = document.querySelector(this.config.selector);
+    const elm = this.getElement();
     this.focusZoomOut({ target: elm });
   }
 
@@ -99,7 +107,7 @@ export default class Zoomify {
   }
 
   setZoomEvents(detach = false) {
-    const elm = document.querySelector(this.config.selector);
+    const elm = this.getElement();
 
     elm.zoomify = this;
     if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
@@ -237,11 +245,14 @@ export default class Zoomify {
     }, this.config.transitionDuration);
   }
 
-  /**
-   * Todo: try to implement destroy zoomify instance for individual elements.
-   */
   destroy() {
     this.zoomOut();
     this.setZoomEvents(true);
+
+    if (this.config.clickToZoom) {
+      this.getElement().parentElement.querySelector('#zoomify-click-to-zoom').remove();
+    }
+
+    delete this.getElement().zoomify;
   }
 }
