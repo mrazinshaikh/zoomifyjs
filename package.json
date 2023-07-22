@@ -1,11 +1,11 @@
 {
-  "name": "zoomify",
+  "name": "zoomifyjs",
   "private": true,
   "version": "0.1.0",
   "description": "lightweight plugin for image zoom functionality",
-  "main": "./dist/zoomify.mjs",
+  "main": "./dist/zoomifyJs.mjs",
   "scripts": {
-    "build": "eslint --fix src/zoomify.js && vite build",
+    "build": "eslint --fix src/zoomifyJs.js && vite build",
     "dev": "vite build --watch"
   },
   "devDependencies": {
@@ -14,11 +14,11 @@
     "rollup-plugin-terser": "^7.0.2",
     "vite": "^4.4.4"
   },
-  "repository": "mrazinshaikh/zoomify",
+  "repository": "mrazinshaikh/zoomifyjs",
   "author": "M Razin Shaikh",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrazinshaikh/zoomify/issues"
+    "url": "https://github.com/mrazinshaikh/zoomifyjs/issues"
   },
-  "homepage": "https://github.com/mrazinshaikh/zoomify#readme"
+  "homepage": "https://github.com/mrazinshaikh/zoomifyjs#readme"
 }

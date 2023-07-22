@@ -1,4 +1,4 @@
-export default class Zoomify {
+export default class ZoomifyJs {
   /**
    * @param {string|object} options
    */
@@ -16,7 +16,7 @@ export default class Zoomify {
 
   resolveConfig(options) {
     const settings = {
-      selector: '.zoomify',
+      selector: '.zoomifyJs',
       transitionDuration: 300,
       easing: 'ease-in-out',
       scale: 2,
@@ -49,9 +49,9 @@ export default class Zoomify {
     elm.style.cursor = 'zoom-in';
 
     if (this.config.clickToZoom) {
-      elm.zoomify = this;
+      elm.zoomifyJs = this;
       const btn = document.createElement('button');
-      btn.setAttribute('id', 'zoomify-click-to-zoom');
+      btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
       btn.style.border = 0;
       btn.style.background = 'rgba(0,0,0, 0.5)';
       btn.style.padding = '10px';
@@ -109,7 +109,7 @@ export default class Zoomify {
   setZoomEvents(detach = false) {
     const elm = this.getElement();
 
-    elm.zoomify = this;
+    elm.zoomifyJs = this;
     if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
       // To Preload image
       const zoomImg = new Image();
@@ -182,7 +182,7 @@ export default class Zoomify {
         elm.parentElement.style.display = 'block';
         elm.parentElement.style.overflow = 'hidden';
       }
-      elm.zoomify = this;
+      elm.zoomifyJs = this;
     }
   }
 
@@ -211,7 +211,7 @@ export default class Zoomify {
     }
 
     // prevent image move when cursor is out of bound
-    if (!force && !Zoomify.inBoundaries(imgRect, pageX, pageY)) { return; }
+    if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) { return; }
     const offsetX = ((pageX - imgRect.left) / imgRect.width) * 100;
     const offsetY = ((pageY - imgRect.top) / imgRect.height) * 100;
     img.style.scale = this.config.scale;
@@ -250,9 +250,9 @@ export default class Zoomify {
     this.setZoomEvents(true);
 
     if (this.config.clickToZoom) {
-      this.getElement().parentElement.querySelector('#zoomify-click-to-zoom').remove();
+      this.getElement().parentElement.querySelector('#zoomifyJs-click-to-zoom').remove();
     }
 
-    delete this.getElement().zoomify;
+    delete this.getElement().zoomifyJs;
   }
 }
