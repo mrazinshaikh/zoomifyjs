@@ -6,6 +6,7 @@ Full docs: https://mrazinshaikh.github.io/zoomifyjs
 2. [Options](#options)
 3. [API](#api)
 4. [Contributing](#contributing)
+5. [Roadmap](#Roadmap)
 
 ## Installation
 
