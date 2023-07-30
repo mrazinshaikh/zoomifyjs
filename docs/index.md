@@ -27,7 +27,7 @@ Setup is easy. A little bit of markup...
 </picture>
 ```
 
-If you are using a module bundler like Webpack or Browserify...
+If you are using a module bundler like Webpack or Vite...
 
 ```bash
 npm install zoomifyjs
@@ -84,7 +84,7 @@ Enable zoom after click on the image.
 ## Api
 
 **`destroy`** (function)  
-Index (zero-based) of the starting slide [(example)](http://codepen.io/pawelgrzybek/pen/vmBLER).
+Remove zoom instance from the element.
 
 ## Example
 
