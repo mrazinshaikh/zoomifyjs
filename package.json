@@ -1,6 +1,5 @@
 {
   "name": "zoomifyjs",
-  "private": true,
   "version": "0.1.0",
   "description": "lightweight plugin for image zoom functionality",
   "main": "./dist/zoomifyjs.mjs",
