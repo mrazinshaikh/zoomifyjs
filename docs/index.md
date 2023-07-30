@@ -39,7 +39,7 @@ yarn add zoomifyjs # Available soon....
 ```
 
 ```js
-import ZoomifyJs from 'ZoomifyJs';
+import ZoomifyJs from "zoomifyjs";
 new ZoomifyJs();
 ```
 
