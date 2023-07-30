@@ -166,7 +166,7 @@ button:active {
   width: 100%;
 }
 
-.icon-container svg{
+.icon-container img{
   display: block;
   max-width: 120px;
   margin-left: auto;
