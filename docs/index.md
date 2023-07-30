@@ -39,7 +39,7 @@ yarn add zoomifyjs # Available soon....
 ```
 
 ```js
-import ZoomifyJs from 'ZoomifyJs';
+import ZoomifyJs from "zoomifyjs";
 new ZoomifyJs();
 ```
 
@@ -164,7 +164,7 @@ Coming soon...
 
 ## Roadmap
 
-1. [] Register on npm package registry 
+1. [x] Register on npm package registry 
 2. [] Register on yarn package registry 
 3. [] Register for cdn.
 4. [] Enable zoom on multiple image with single instance  

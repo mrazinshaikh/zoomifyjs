@@ -1,9 +1,8 @@
 {
   "name": "zoomifyjs",
-  "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "lightweight plugin for image zoom functionality",
-  "main": "./dist/zoomifyJs.mjs",
+  "main": "./dist/zoomifyjs.mjs",
   "scripts": {
     "build": "eslint --fix src/zoomifyJs.js && vite build && cp dist/zoomifyjs.umd.js docs/assets/zoomifyjs.umd.js",
     "dev": "vite build --watch",
@@ -22,5 +21,5 @@
   "bugs": {
     "url": "https://github.com/mrazinshaikh/zoomifyjs/issues"
   },
-  "homepage": "https://github.com/mrazinshaikh/zoomifyjs#readme"
+  "homepage": "https://mrazinshaikh.github.io/zoomifyjs"
 }
