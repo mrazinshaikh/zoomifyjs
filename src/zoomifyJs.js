@@ -20,7 +20,7 @@ export default class ZoomifyJs {
       transitionDuration: 300,
       easing: 'ease-in-out',
       scale: 2,
-      clickToZoom: true
+      clickToZoom: false
     };
 
     if (typeof options === 'string') {
@@ -167,6 +167,8 @@ export default class ZoomifyJs {
         setTimeout(() => {
           elm.parentElement.style.removeProperty('display');
           elm.parentElement.style.removeProperty('overflow');
+          elm.parentElement.style.removeProperty('max-height');
+          elm.parentElement.style.removeProperty('max-width');
           elm.style.removeProperty('transition');
           elm.removeAttribute('data-src');
         }, this.config.transitionDuration);
@@ -179,8 +181,11 @@ export default class ZoomifyJs {
         elm.tagName === 'IMG' &&
             elm.parentElement.tagName === 'PICTURE'
       ) {
+        const imgRect = elm.getBoundingClientRect();
         elm.parentElement.style.display = 'block';
         elm.parentElement.style.overflow = 'hidden';
+        elm.parentElement.style.maxHeight = `${imgRect.height}px`;
+        elm.parentElement.style.maxWidth = `${imgRect.width}px`;
       }
       elm.zoomifyJs = this;
     }
@@ -191,8 +196,8 @@ export default class ZoomifyJs {
   }
 
   static inBoundaries(bounds, x, y) {
-    const l = bounds.left;
-    const t = bounds.top;
+    const l = bounds.left + window.scrollX;
+    const t = bounds.top + window.scrollY;
     const h = bounds.height;
     const w = bounds.width;
     const maxX = l + w;
@@ -212,8 +217,8 @@ export default class ZoomifyJs {
 
     // prevent image move when cursor is out of bound
     if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) { return; }
-    const offsetX = ((pageX - imgRect.left) / imgRect.width) * 100;
-    const offsetY = ((pageY - imgRect.top) / imgRect.height) * 100;
+    const offsetX = ((pageX - (imgRect.left + window.scrollX)) / imgRect.width) * 100;
+    const offsetY = ((pageY - (imgRect.top + window.scrollY)) / imgRect.height) * 100;
     img.style.scale = this.config.scale;
     img.style.transformOrigin = `${offsetX}% ${offsetY}%`;
     this.zoomedIn = true;

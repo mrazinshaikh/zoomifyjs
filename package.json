@@ -5,12 +5,14 @@
   "description": "lightweight plugin for image zoom functionality",
   "main": "./dist/zoomifyJs.mjs",
   "scripts": {
-    "build": "eslint --fix src/zoomifyJs.js && vite build",
-    "dev": "vite build --watch"
+    "build": "eslint --fix src/zoomifyJs.js && vite build && cp dist/zoomifyjs.umd.js docs/assets/zoomifyjs.umd.js",
+    "dev": "vite build --watch",
+    "docs:preview": "generate-md --layout ./docs/_layouts/ --input ./docs/ --output ./output/"
   },
   "devDependencies": {
     "eslint": "4.16.0",
     "eslint-loader": "^1.9.0",
+    "markdown-styles": "^3.2.0",
     "rollup-plugin-terser": "^7.0.2",
     "vite": "^4.4.4"
   },

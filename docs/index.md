@@ -1,11 +1,16 @@
+---
+layout: page
+---
+
 Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependencies and no styling. As Brad Frost once said "do that shit yourself". It is 100% open source and [available on Github](https://github.com/mrazinshaikh/zoomifyjs). It is free to use on personal and commercial projects. Use it with your favourite module bundler or by manually injecting the script into your project.
 
-Full docs: https://mrazinshaikh.github.io/zoomifyjs
+<a href="https://github.com/mrazinshaikh/zoomifyjs/releases" class="btn">Download ZoomifyJs from Github</a>
 
 1. [Installation](#installation)
 2. [Options](#options)
 3. [API](#api)
-4. [Contributing](#contributing)
+4. [Example](#example)
+5. [Contributing](#contributing)
 
 ## Installation
 
@@ -79,7 +84,77 @@ Enable zoom after click on the image.
 ## Api
 
 **`destroy`** (function)  
-Remove zoom instance from the element
+Remove zoom instance from the element.
+
+## Example
+
+```html
+<picture>
+    <img 
+        src="./assets/car-image-300x300.webp"
+        zoomify="./assets/car-image.webp"
+        alt="Car-Image"
+        id="zoomifyJs"
+    >
+</picture>
+```
+
+```js
+const zoomifyJs = new ZoomifyJs();
+```
+#### Example 1
+
+<picture class="image-container">
+    <img 
+        src="./assets/car-image-300x300.webp"
+        zoomify="./assets/car-image.webp"
+        alt="Car-Image"
+        class="zoomifyJs"
+        width="400"
+    >
+</picture>
+
+<style>
+  .zoomifyJs {
+    width: 400px;
+  }
+</style>
+
+<script>
+  const zoomifyJs = new ZoomifyJs();
+</script>
+
+#### Example 2 (Click to zoom)
+
+<picture class="image-container">
+    <img 
+        src="./assets/car-image-300x300.webp"
+        zoomify="./assets/car-image.webp"
+        alt="Car-Image"
+        class="zoomifyJs-click-to-zoom"
+        width="400"
+    >
+</picture>
+
+<script>
+  const zoomifyJs2 = new ZoomifyJs({selector: '.zoomifyJs-click-to-zoom', clickToZoom: true});
+</script>
+
+<style>
+  .image-container:has(.zoomifyJs-click-to-zoom) {
+    display: block;
+    max-width: 400px;
+  }
+  .zoomifyJs-click-to-zoom{
+    width: 400px;
+  }
+</style>
+
+## More examples
+
+```
+Coming soon...
+```
 
 ## Contributing
 
