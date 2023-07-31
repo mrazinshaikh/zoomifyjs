@@ -71,6 +71,32 @@
     </footer>
 
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const elements = document.querySelectorAll("pre.highlight");
+      elements.forEach((elm) =>
+        elm.addEventListener("click", copyToClipBoard)
+      );
+    });
+
+    function copyToClipBoard(e) {
+      const elm = e.target.querySelector("code");
+      if (navigator.clipboard) {
+        const type = "text/plain";
+        const blob = new Blob([elm.textContent], { type });
+        navigator.clipboard.write([new ClipboardItem({ [type]: blob })]);
+      } else {
+        const range = document.createRange();
+        range.selectNodeContents(elm);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+      }
+      console.info("Copied to clipboard");
+    }
+  </script>
 </body>
 
 </html>
