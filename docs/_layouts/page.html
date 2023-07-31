@@ -42,6 +42,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700&display=swap" rel="stylesheet">
   <link rel="preload" href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700&display=swap" as="style">
   <script src="assets/zoomifyjs.umd.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/toaster-js@2.2.3/default.css">
 </head>
 
 <body>
@@ -94,9 +95,12 @@
         selection.addRange(range);
         document.execCommand("copy");
       }
-      console.info("Copied to clipboard");
+      // console.info("Copied to clipboard");
+      new Toast('Copied to clipboard', Toast.TYPE_DONE, 2000)
     }
   </script>
+
+  <script src="https://unpkg.com/toaster-js@2.2.3/umd.js" defer></script>
 </body>
 
 </html>

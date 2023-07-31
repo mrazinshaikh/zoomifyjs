@@ -41,7 +41,12 @@ export default class ZoomifyJs {
    * @returns {HTMLElement};
    */
   getElement() {
-    return this.element || (this.element = document.querySelector(this.config.selector));
+    if (!this.element) {
+      this.element = typeof this.config.selector === 'string'
+        ? document.querySelector(this.config.selector)
+        : this.config.selector;
+    }
+    return this.element;
   }
 
   init() {
