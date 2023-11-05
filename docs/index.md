@@ -44,6 +44,11 @@ import ZoomifyJs from "zoomifyjs";
 new ZoomifyJs();
 ```
 
+Or include from cdn
+```
+<script src="https://unpkg.com/zoomifyjs@latest/dist/zoomifyjs.umd.js"></script>
+```
+
 ...or manually inject the minified script into your website.
 
 ```html
