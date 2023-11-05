@@ -4,7 +4,6 @@ export default class ZoomifyJs {
    */
   constructor(options = {}) {
     // to check if zoomed in or not
-    // this.zoomedIn = false;
     this.resolveConfig(options);
     this.handleFocusZoom = e => {
       e.preventDefault();
