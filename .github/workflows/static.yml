@@ -6,12 +6,12 @@ on:
   push:
     branches:
       - master
-  defaults:
-    run:
-      working-directory: ./docs-v2/
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./docs-v2/
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
