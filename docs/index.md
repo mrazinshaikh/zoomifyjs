@@ -11,6 +11,7 @@ Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependen
 3. [API](#api)
 4. [Example](#example)
 5. [Contributing](#contributing)
+6. [Roadmap](#roadmap)
 
 ## Installation
 
@@ -41,6 +42,11 @@ yarn add zoomifyjs # Available soon....
 ```js
 import ZoomifyJs from "zoomifyjs";
 new ZoomifyJs();
+```
+
+Or include from cdn
+```
+<script src="https://unpkg.com/zoomifyjs@latest/dist/zoomifyjs.umd.js"></script>
 ```
 
 ...or manually inject the minified script into your website.
@@ -102,7 +108,7 @@ Remove zoom instance from the element.
 ```js
 const zoomifyJs = new ZoomifyJs();
 ```
-#### Example 1
+### Example 1
 
 <picture class="image-container">
     <img 
@@ -111,6 +117,8 @@ const zoomifyJs = new ZoomifyJs();
         alt="Car-Image"
         class="zoomifyJs"
         width="400"
+        height="266"
+        loading="lazy"
     >
 </picture>
 
@@ -124,7 +132,7 @@ const zoomifyJs = new ZoomifyJs();
   const zoomifyJs = new ZoomifyJs();
 </script>
 
-#### Example 2 (Click to zoom)
+### Example 2 (Click to zoom)
 
 <picture class="image-container">
     <img 
@@ -133,6 +141,8 @@ const zoomifyJs = new ZoomifyJs();
         alt="Car-Image"
         class="zoomifyJs-click-to-zoom"
         width="400"
+        height="266"
+        loading="lazy"
     >
 </picture>
 
@@ -164,12 +174,12 @@ Coming soon...
 
 ## Roadmap
 
-1. [x] Register on npm package registry 
-2. [] Register on yarn package registry 
-3. [] Register for cdn.
-4. [] Enable zoom on multiple image with single instance  
-5. [] Allow DOMElement for selector value
-6. [] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
-7. [] Change image source bug fix
-8. [] Allow customizing click to zoom button stylings
-9. [] Codepen collection for more examples
+- [x] Register on npm package registry 
+- [] Register on yarn package registry 
+- [] Register for cdn.
+- [] Enable zoom on multiple image with single instance  
+- [] Allow DOMElement for selector value
+- [] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
+- [] Change image source bug fix
+- [] Allow customizing click to zoom button stylings
+- [] Codepen collection for more examples

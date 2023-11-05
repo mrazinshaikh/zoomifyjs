@@ -6,12 +6,28 @@ export default class ZoomifyJs {
     // to check if zoomed in or not
     // this.zoomedIn = false;
     this.resolveConfig(options);
-    this.handleFocusZoom = e => this.focusZoom.call(this, e);
+    this.handleFocusZoom = e => {
+      e.preventDefault();
+      if (this.animating) {
+        return;
+      }
+
+      this.animating = true;
+      requestAnimationFrame(() => {
+        this.focusZoom.call(this, e);
+
+        this.animating = false;
+      });
+    };
     this.handleFocusZoomOut = e => this.focusZoomOut.call(this, e);
+    this.handleTouchEnd = e => this.touchEnd.call(this, e);
     this.handleMouseEnter = e => this.mouseEnter.call(this, e);
     this.handleMouseOut = e => this.mouseOut.call(this, e);
 
     this.init();
+
+    this.timeout = null;
+    this.lastTap = 0;
   }
 
   resolveConfig(options) {
@@ -41,7 +57,12 @@ export default class ZoomifyJs {
    * @returns {HTMLElement};
    */
   getElement() {
-    return this.element || (this.element = document.querySelector(this.config.selector));
+    if (!this.element) {
+      this.element = typeof this.config.selector === 'string'
+        ? document.querySelector(this.config.selector)
+        : this.config.selector;
+    }
+    return this.element;
   }
 
   init() {
@@ -144,7 +165,7 @@ export default class ZoomifyJs {
         elm.removeEventListener(name, this.handleFocusZoom);
       }
       else {
-        elm.addEventListener(name, this.handleFocusZoom, { passive: true });
+        elm.addEventListener(name, this.handleFocusZoom);
       }
     })
     ;['mouseleave'].forEach(name => {
@@ -155,6 +176,14 @@ export default class ZoomifyJs {
         elm.addEventListener(name, this.handleFocusZoomOut, {
           passive: true,
         });
+      }
+    })
+    ;['touchend'].forEach(name => {
+      if (detach) {
+        elm.removeEventListener(name, this.handleTouchEnd);
+      }
+      else {
+        elm.addEventListener(name, this.handleTouchEnd);
       }
     });
     if (detach) {
@@ -231,6 +260,25 @@ export default class ZoomifyJs {
       img.style.removeProperty('transform-origin');
     }, this.config.transitionDuration);
     this.zoomedIn = false;
+  }
+
+  touchEnd(e) {
+    if (!this.zoomedIn) {
+      return;
+    }
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - this.lastTap;
+    clearTimeout(this.timeout);
+    if (tapLength < 500 && tapLength > 0) {
+      e.preventDefault();
+      this.focusZoomOut.call(this, e);
+    }
+    else {
+      this.timeout = setTimeout(() => {
+        clearTimeout(this.timeout);
+      }, 500);
+    }
+    this.lastTap = currentTime;
   }
 
   mouseEnter(e) {

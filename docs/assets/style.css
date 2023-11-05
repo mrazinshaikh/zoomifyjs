@@ -91,8 +91,9 @@ code {
 .page {
   width: 100%;
   max-width: 44rem;
-  margin: 3.2rem auto;
+  margin: 1rem auto;
   padding: 0 1rem;
+  padding-bottom: 1rem !important;
 }
 
 /* Logo */
@@ -166,9 +167,31 @@ button:active {
   width: 100%;
 }
 
-.icon-container svg{
+.icon-container img{
   display: block;
   max-width: 120px;
   margin-left: auto;
   margin-right: auto;
+}
+
+pre.highlight::after {
+  content: "Copy";
+  position: absolute;
+  right: 1rem;
+  top: 0.5rem;
+  display: none;
+}
+
+pre.highlight:hover::after {
+  display: block;
+}
+
+pre.highlight {
+  padding-right: 3rem;
+  position: relative;
+  cursor: pointer;
+}
+
+pre.highlight code{
+  pointer-events: none;
 }

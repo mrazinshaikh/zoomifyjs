@@ -1,3 +1,8 @@
+<!-- https://github.com/ngryman/badge-size -->
+![zoomifyjs.umd.js](https://img.badgesize.io/mrazinshaikh/zoomifyjs/master/dist/zoomifyjs.umd.js?compression=gzip&color=blue&label=zoomifyjs.umd.js%20gzip%20size)
+![zoomifyjs.mjs](https://img.badgesize.io/mrazinshaikh/zoomifyjs/master/dist/zoomifyjs.mjs?compression=gzip&color=blue&label=zoomifyjs.mjs%20gzip%20size)
+
+
 Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependencies and no styling. As Brad Frost once said "do that shit yourself". It is 100% open source and [available on Github](https://github.com/mrazinshaikh/zoomifyjs). It is free to use on personal and commercial projects. Use it with your favourite module bundler or by manually injecting the script into your project.
 
 Full docs: https://mrazinshaikh.github.io/zoomifyjs
@@ -6,6 +11,7 @@ Full docs: https://mrazinshaikh.github.io/zoomifyjs
 2. [Options](#options)
 3. [API](#api)
 4. [Contributing](#contributing)
+5. [Roadmap](#roadmap)
 
 ## Installation
 
