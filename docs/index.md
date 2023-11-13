@@ -193,4 +193,4 @@ Coming soon...
 
 Made with ❤️
 
-Published under [MIT License](../../LICENCE).
+Published under [MIT License](./LICENCE).

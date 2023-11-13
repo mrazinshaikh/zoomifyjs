@@ -4,7 +4,7 @@
   "description": "lightweight plugin for image zoom functionality",
   "main": "./dist/zoomifyjs.mjs",
   "scripts": {
-    "build": "eslint --fix src/zoomifyJs.js && vite build && cp dist/zoomifyjs.umd.js docs/assets/zoomifyjs.umd.js",
+    "build": "./make.sh",
     "dev": "vite build --watch",
     "docs:preview": "generate-md --layout ./docs/_layouts/ --input ./docs/ --output ./output/"
   },
