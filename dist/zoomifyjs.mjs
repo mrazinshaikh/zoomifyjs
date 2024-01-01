@@ -3,7 +3,7 @@
  * This is an ECMAScript module (ESM) file for the ZoomifyJs JavaScript library.
  * It is designed for usage in modern JavaScript environments, supporting ECMAScript modules.
  *
- * @version 0.1.2
+ * @version 0.1.3
  * @see {@link https://github.com/mrazinshaikh/zoomifyjs/} for the latest version and documentation.
  *
  * @description
