@@ -12,7 +12,7 @@ Full docs: https://mrazinshaikh.github.io/zoomifyjs
 3. [API](#api)
 4. [Contributing](#contributing)
 5. [Roadmap](#roadmap)
-6. [extra](#extra)
+6. [Extra](#extra)
 
 ## Installation
 

@@ -12,7 +12,7 @@ Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependen
 4. [Example](#example)
 5. [Contributing](#contributing)
 6. [Roadmap](#roadmap)
-7. [extra](#extra)
+7. [Extra](#extra)
 
 ## Installation
 
