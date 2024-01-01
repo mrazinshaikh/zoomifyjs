@@ -4,7 +4,8 @@ export default class ZoomifyJs {
    */
   constructor(options = {}) {
     // to check if zoomed in or not
-    // this.zoomedIn = false;
+    this.zoomedIn = false;
+    this.isMobile = true;
     this.resolveConfig(options);
     this.handleFocusZoom = e => {
       e.preventDefault();
@@ -56,11 +57,12 @@ export default class ZoomifyJs {
   /**
    * @returns {HTMLElement};
    */
-  getElement() {
-    if (!this.element) {
-      this.element = typeof this.config.selector === 'string'
-        ? document.querySelector(this.config.selector)
-        : this.config.selector;
+  getElement(force = false) {
+    if (!this.element || force) {
+      this.element =
+        typeof this.config.selector === 'string'
+          ? document.querySelector(this.config.selector)
+          : this.config.selector;
     }
     return this.element;
   }
@@ -68,6 +70,12 @@ export default class ZoomifyJs {
   init() {
     const elm = this.getElement();
     elm.style.cursor = 'zoom-in';
+
+    // check if touch screen
+    if ('ontouchstart' in window) {
+      this.touch = true;
+    }
+    this.touchLogic.call(this);
 
     if (this.config.clickToZoom) {
       elm.zoomifyJs = this;
@@ -136,39 +144,40 @@ export default class ZoomifyJs {
       const zoomImg = new Image();
       zoomImg.src = elm.attributes.zoomify.value;
     }
-    ['touchstart'].forEach(name => {
-      if (detach) {
-        elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
-      }
-      else {
-        elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
-      }
-    })
-    ;['mouseenter'].forEach(name => {
+    // ['touchstart'].forEach(name => {
+    //   if (detach) {
+    //     elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
+    //   }
+    //   else {
+    //     elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
+    //   }
+    // })
+    ['mouseenter'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleMouseEnter);
       }
       else {
         elm.addEventListener(name, this.handleMouseEnter, { passive: true });
       }
-    })
-    ;['mouseout'].forEach(name => {
+    });
+    ['mouseout'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleMouseOut);
       }
       else {
         elm.addEventListener(name, this.handleMouseOut, { passive: true });
       }
-    })
-    ;['mousemove', 'touchmove'].forEach(name => {
+    });
+    // ;['mousemove', 'touchmove'].forEach(name => {
+    ['mousemove'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleFocusZoom);
       }
       else {
         elm.addEventListener(name, this.handleFocusZoom);
       }
-    })
-    ;['mouseleave'].forEach(name => {
+    });
+    ['mouseleave'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleFocusZoomOut);
       }
@@ -189,10 +198,7 @@ export default class ZoomifyJs {
     if (detach) {
       this.focusZoomOut({ target: elm });
       elm.removeEventListener('contextmenu', this.preventContextMenu);
-      if (
-        elm.tagName === 'IMG' &&
-            elm.parentElement.tagName === 'PICTURE'
-      ) {
+      if (elm.tagName === 'IMG' && elm.parentElement.tagName === 'PICTURE') {
         setTimeout(() => {
           elm.parentElement.style.removeProperty('display');
           elm.parentElement.style.removeProperty('overflow');
@@ -206,10 +212,7 @@ export default class ZoomifyJs {
     else {
       elm.addEventListener('contextmenu', this.preventContextMenu);
       elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
-      if (
-        elm.tagName === 'IMG' &&
-            elm.parentElement.tagName === 'PICTURE'
-      ) {
+      if (elm.tagName === 'IMG' && elm.parentElement.tagName === 'PICTURE') {
         const imgRect = elm.getBoundingClientRect();
         elm.parentElement.style.display = 'block';
         elm.parentElement.style.overflow = 'hidden';
@@ -222,6 +225,97 @@ export default class ZoomifyJs {
 
   preventContextMenu(e) {
     e.preventDefault();
+  }
+
+  touchLogic(reset = false) {
+    // eslint-disable-next-line one-var, init-declarations, one-var-declaration-per-line
+    let startX, startY, currentX, currentY, translateX = 0, translateY = 0;
+    if (reset) {
+      translateX = 0;
+      translateY = 0;
+      return;
+    }
+    // Adjust this value to control the drag speed
+    const dragFactor = 0.5;
+
+
+    const elm = this.getElement();
+
+    function handleTouchStart(event) {
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+      currentX = startX;
+      currentY = startY;
+    }
+
+    function handleTouchMove(event) {
+      if (!this.zoomedIn) {
+        return;
+      }
+      event.preventDefault();
+
+      currentX = event.touches[0].clientX;
+      currentY = event.touches[0].clientY;
+
+      // Calculate the drag direction
+      const deltaX = (currentX - startX) * dragFactor;
+      const deltaY = (currentY - startY) * dragFactor;
+
+      // Calculate the drag distance
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Determine the direction
+      let direction = '';
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        direction = (deltaX > 0) ? 'right' : 'left';
+      }
+      else {
+        direction = (deltaY > 0) ? 'down' : 'up';
+      }
+
+      console.log(`Direction: ${direction}, Distance: ${distance}`);
+
+      const elmRect = elm.getBoundingClientRect();
+      const patentRect = elm.parentElement.getBoundingClientRect();
+      const nextX = translateX + deltaX;
+      const nextY = translateY + deltaY;
+      if (
+        (elmRect.left <= patentRect.left || nextX < translateX) &&
+        (elmRect.right >= patentRect.right || nextX > translateX)
+      ) {
+        translateX = nextX;
+      }
+      if (
+        (elmRect.top <= patentRect.top || nextY < translateY) &&
+        (elmRect.bottom >= patentRect.bottom || nextY > translateY)
+      ) {
+        translateY = nextY;
+      }
+      // Update the element's position
+      elm.style.transform = `translate(${translateX}px, ${translateY}px)`;
+
+      startX = currentX;
+      startY = currentY;
+    }
+
+    /** @param {Event} e */
+    const handleTouchMovePaint = e => {
+      e.preventDefault();
+      if (this.animatingMove) {
+        return;
+      }
+
+      this.animatingMove = true;
+      requestAnimationFrame(() => {
+        handleTouchMove.call(this, e);
+
+        this.animatingMove = false;
+      });
+    };
+
+    elm.addEventListener('touchstart', handleTouchStart);
+    elm.addEventListener('touchmove', handleTouchMovePaint);
+    // elm.addEventListener('touchend', handleMobileTouchEnd);
   }
 
   static inBoundaries(bounds, x, y) {
@@ -245,7 +339,9 @@ export default class ZoomifyJs {
     }
 
     // prevent image move when cursor is out of bound
-    if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) { return; }
+    if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) {
+      return;
+    }
     const offsetX = ((pageX - (imgRect.left + window.scrollX)) / imgRect.width) * 100;
     const offsetY = ((pageY - (imgRect.top + window.scrollY)) / imgRect.height) * 100;
     img.style.scale = this.config.scale;
@@ -256,6 +352,8 @@ export default class ZoomifyJs {
   focusZoomOut(e) {
     const img = e.target;
     img.style.removeProperty('scale');
+    img.style.removeProperty('transform');
+    this.touchLogic(true);
     setTimeout(() => {
       img.style.removeProperty('transform-origin');
     }, this.config.transitionDuration);
@@ -303,7 +401,9 @@ export default class ZoomifyJs {
     this.setZoomEvents(true);
 
     if (this.config.clickToZoom) {
-      this.getElement().parentElement.querySelector('#zoomifyJs-click-to-zoom').remove();
+      this.getElement()
+        .parentElement.querySelector('#zoomifyJs-click-to-zoom')
+        .remove();
     }
 
     delete this.getElement().zoomifyJs;
