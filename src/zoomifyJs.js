@@ -1,13 +1,14 @@
 export default class ZoomifyJs {
 
-  static ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom'];
+  static ALLOWED_OPTIONS= ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
 
   static DEFAULT_SETTINGS = {
     selector: '.zoomifyJs',
     transitionDuration: 300,
     easing: 'ease-in-out',
     scale: 2,
-    clickToZoom: false
+    clickToZoom: false,
+    buttonText: 'Click to zoom'
   };
 
   /**
@@ -43,7 +44,7 @@ export default class ZoomifyJs {
   }
 
   resolveConfig(options) {
-    const settings = self.DEFAULT_SETTINGS;
+    const settings = ZoomifyJs.DEFAULT_SETTINGS;
 
     switch (typeof options) {
       case 'string':
@@ -52,7 +53,7 @@ export default class ZoomifyJs {
       default:
         const userSettings = options;
         for (const option in userSettings) {
-          if (typeof option === 'string' && self.ALLOWED_OPTIONS.includes(option)) {
+          if (typeof option === 'string' && ZoomifyJs.ALLOWED_OPTIONS.includes(option)) {
             settings[option] = userSettings[option];
           }
         }
@@ -103,8 +104,8 @@ export default class ZoomifyJs {
       btn.style.color = 'white';
       btn.style.margin = '0 auto';
       btn.style.pointerEvents = 'none';
-      //TODO: Add the textContent as a setting to allow the user to change the text
-      btn.textContent = 'Click to zoom';
+
+      btn.textContent = this.config.buttonText;
 
       elm.parentElement.style.position = 'relative';
       elm.parentElement.appendChild(btn);
