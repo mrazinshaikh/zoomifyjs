@@ -1,6 +1,6 @@
 export default class ZoomifyJs {
 
-  static ALLOWED_OPTIONS= ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
+  static ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
 
   static DEFAULT_SETTINGS = {
     selector: '.zoomifyJs',
@@ -45,13 +45,13 @@ export default class ZoomifyJs {
 
   resolveConfig(options) {
     const settings = ZoomifyJs.DEFAULT_SETTINGS;
+    const userSettings = options;
 
     switch (typeof options) {
       case 'string':
         settings.selector = options;
         break;
       default:
-        const userSettings = options;
         for (const option in userSettings) {
           if (typeof option === 'string' && ZoomifyJs.ALLOWED_OPTIONS.includes(option)) {
             settings[option] = userSettings[option];
@@ -74,7 +74,7 @@ export default class ZoomifyJs {
         : this.config.selector;
     }
 
-    //TODO: Check if element is valid, if not, throw an error
+    // TODO: Check if element is valid, if not, throw an error
 
 
     return this.element;
@@ -88,7 +88,7 @@ export default class ZoomifyJs {
       elm.zoomifyJs = this;
       const btn = document.createElement('button');
       btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
-      //TODO: Move the style into a single line definition
+      // TODO: Move the style into a single line definition
       btn.style.border = 0;
       btn.style.background = 'rgba(0,0,0, 0.5)';
       btn.style.padding = '10px';
@@ -227,7 +227,8 @@ export default class ZoomifyJs {
           elm.removeAttribute('data-src');
         }, this.config.transitionDuration);
       }
-    } else {
+    }
+    else {
       elm.addEventListener('contextmenu', this.preventContextMenu);
       elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
 
@@ -310,7 +311,8 @@ export default class ZoomifyJs {
     if (tapLength < 500 && tapLength > 0) {
       e.preventDefault();
       this.focusZoomOut.call(this, e);
-    } else {
+    }
+    else {
       this.timeout = setTimeout(() => {
         clearTimeout(this.timeout);
       }, 500);
