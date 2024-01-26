@@ -12,6 +12,7 @@ Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependen
 4. [Example](#example)
 5. [Contributing](#contributing)
 6. [Roadmap](#roadmap)
+7. [extra](#extra)
 
 ## Installation
 
@@ -166,7 +167,7 @@ const zoomifyJs = new ZoomifyJs();
 Coming soon...
 ```
 
-## Contributing
+## Contribution
 
 ```
 Coming soon...
@@ -184,3 +185,13 @@ Coming soon...
 - [ ] Allow customizing click to zoom button stylings
 - [ ] Codepen collection for more examples
 - [ ] migrate to ts for better type-hinting and type safety.
+
+## Extra
+
+- Code structure and initial docs on github-pages using jekyll is inspired from [siema](https://pawelgrzybek.github.io/siema/) a carousel plugin.
+
+## License
+
+Made with ❤️
+
+Published under [MIT License](./LICENCE).

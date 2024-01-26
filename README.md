@@ -12,6 +12,7 @@ Full docs: https://mrazinshaikh.github.io/zoomifyjs
 3. [API](#api)
 4. [Contributing](#contributing)
 5. [Roadmap](#roadmap)
+6. [extra](#extra)
 
 ## Installation
 
@@ -105,3 +106,13 @@ Coming soon...
 08. [ ] Allow customizing click to zoom button stylings
 09. [ ] Codepen collection for more examples
 10. [ ] migrate to ts for better type-hinting and type safety.
+
+## Extra
+
+- Code structure and initial docs on github-pages using jekyll is inspired from [siema](https://pawelgrzybek.github.io/siema/) a carousel plugin.
+
+## License
+
+Made with ❤️
+
+Published under [MIT License](./LICENCE).
