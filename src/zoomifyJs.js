@@ -1,3 +1,13 @@
+class InvalidHTMLImageElementError extends Error {
+  constructor(message = 'Invalid element given. Element should be valid HTMLImageElement.') {
+    super(message);
+    this.name = 'InvalidHTMLImageElementError';
+  }
+}
+
+/**
+ * @throws {InvalidHTMLImageElementError} Throws when the provided element is not a valid HTML image element.
+ */
 export default class ZoomifyJs {
 
   static ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
@@ -65,7 +75,7 @@ export default class ZoomifyJs {
   }
 
   /**
-   * @returns {HTMLElement};
+   * @returns {HTMLImageElement};
    */
   getElement() {
     if (!this.element) {
@@ -74,8 +84,9 @@ export default class ZoomifyJs {
         : this.config.selector;
     }
 
-    // TODO: Check if element is valid, if not, throw an error
-
+    if (!(this.element instanceof HTMLImageElement)) {
+      throw new InvalidHTMLImageElementError();
+    }
 
     return this.element;
   }

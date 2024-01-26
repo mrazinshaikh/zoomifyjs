@@ -95,12 +95,13 @@ Coming soon...
 
 ## Roadmap
 
-1. [x] Register on npm package registry 
-2. [] Register on yarn package registry 
-3. [] Register for cdn.
-4. [] Enable zoom on multiple image with single instance  
-5. [] Allow DOMElement for selector value
-6. [] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
-7. [] Change image source bug fix
-8. [] Allow customizing click to zoom button stylings
-9. [] Codepen collection for more examples
+01. [x] ~~Register on npm package registry~~
+02. [ ] Register on yarn package registry
+03. [x] ~~Register for cdn.~~ (npmjs provide cdn via unpkg.)
+04. [ ] Enable zoom on multiple image with single instance  
+05. [x] ~~Allow DOMElement for selector value~~
+06. [ ] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
+07. [ ] Change image source bug fix
+08. [ ] Allow customizing click to zoom button stylings
+09. [ ] Codepen collection for more examples
+10. [ ] migrate to ts for better type-hinting and type safety.
