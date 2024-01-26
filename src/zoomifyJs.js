@@ -88,23 +88,7 @@ export default class ZoomifyJs {
       elm.zoomifyJs = this;
       const btn = document.createElement('button');
       btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
-      // TODO: Move the style into a single line definition
-      btn.style.border = 0;
-      btn.style.background = 'rgba(0,0,0, 0.5)';
-      btn.style.padding = '10px';
-      btn.style.paddingLeft = '15px';
-      btn.style.paddingRight = '15px';
-      btn.style.borderRadius = '20px';
-      btn.style.position = 'absolute';
-      btn.style.bottom = '15px';
-      btn.style.zIndex = 10;
-      btn.style.left = 0;
-      btn.style.right = 0;
-      btn.style.width = 'max-content';
-      btn.style.color = 'white';
-      btn.style.margin = '0 auto';
-      btn.style.pointerEvents = 'none';
-
+      btn.style.cssText = 'border: 0; background: rgba(0,0,0, 0.5); padding: 10px 15px; border-radius: 20px; position: absolute; bottom: 15px; z-index: 10; left: 0; right: 0; width: max-content; color: white; margin: 0 auto; pointer-events: none;';
       btn.textContent = this.config.buttonText;
 
       elm.parentElement.style.position = 'relative';
