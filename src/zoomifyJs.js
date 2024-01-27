@@ -1,32 +1,15 @@
-class InvalidHTMLImageElementError extends Error {
-  constructor(message = 'Invalid element given. Element should be valid HTMLImageElement.') {
-    super(message);
-    this.name = 'InvalidHTMLImageElementError';
-  }
-}
+import Config from './config';
+import InvalidHTMLImageElementError from './invalidElementError';
 
 /**
  * @throws {InvalidHTMLImageElementError} Throws when the provided element is not a valid HTML image element.
  */
 export default class ZoomifyJs {
-
-  static ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
-
-  static DEFAULT_SETTINGS = {
-    selector: '.zoomifyJs',
-    transitionDuration: 300,
-    easing: 'ease-in-out',
-    scale: 2,
-    clickToZoom: false,
-    buttonText: 'Click to zoom'
-  };
-
   /**
    * @param {string|object} options
-   */
+  */
   constructor(options = {}) {
-    // to check if zoomed in or not
-    this.resolveConfig(options);
+    this.config = new Config(options);
 
     this.handleFocusZoom = e => {
       e.preventDefault();
@@ -51,27 +34,6 @@ export default class ZoomifyJs {
 
     this.timeout = null;
     this.lastTap = 0;
-  }
-
-  resolveConfig(options) {
-    const settings = ZoomifyJs.DEFAULT_SETTINGS;
-    const userSettings = options;
-
-    switch (typeof options) {
-      case 'string':
-        settings.selector = options;
-        break;
-      default:
-        for (const option in userSettings) {
-          if (typeof option === 'string' && ZoomifyJs.ALLOWED_OPTIONS.includes(option)) {
-            settings[option] = userSettings[option];
-          }
-        }
-    }
-
-    this.config = settings;
-
-    return this.config;
   }
 
   /**
