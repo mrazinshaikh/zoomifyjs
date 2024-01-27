@@ -11,7 +11,7 @@
   "devDependencies": {
     "eslint": "^8.56.0",
     "markdown-styles": "^3.2.0",
-    "rollup-plugin-terser": "^7.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
     "vite": "^4.4.4"
   },
   "repository": "mrazinshaikh/zoomifyjs",

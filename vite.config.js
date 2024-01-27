@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 export default defineConfig({
   build: {
