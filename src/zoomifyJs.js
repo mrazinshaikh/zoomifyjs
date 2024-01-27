@@ -1,12 +1,19 @@
+import Config from './config';
+import InvalidHTMLImageElementError from './invalidElementError';
+
+/**
+ * @throws {InvalidHTMLImageElementError} Throws when the provided element is not a valid HTML image element.
+ */
 export default class ZoomifyJs {
   /**
    * @param {string|object} options
-   */
+  */
   constructor(options = {}) {
-    // to check if zoomed in or not
-    this.resolveConfig(options);
+    this.config = new Config(options);
+
     this.handleFocusZoom = e => {
       e.preventDefault();
+
       if (this.animating) {
         return;
       }
@@ -14,10 +21,10 @@ export default class ZoomifyJs {
       this.animating = true;
       requestAnimationFrame(() => {
         this.focusZoom.call(this, e);
-
         this.animating = false;
       });
     };
+
     this.handleFocusZoomOut = e => this.focusZoomOut.call(this, e);
     this.handleTouchEnd = e => this.touchEnd.call(this, e);
     this.handleMouseEnter = e => this.mouseEnter.call(this, e);
@@ -29,31 +36,8 @@ export default class ZoomifyJs {
     this.lastTap = 0;
   }
 
-  resolveConfig(options) {
-    const settings = {
-      selector: '.zoomifyJs',
-      transitionDuration: 300,
-      easing: 'ease-in-out',
-      scale: 2,
-      clickToZoom: false
-    };
-
-    if (typeof options === 'string') {
-      settings.selector = options;
-    }
-    else {
-      const userSettings = options;
-      for (const attrName in userSettings) {
-        settings[attrName] = userSettings[attrName];
-      }
-    }
-
-    this.config = settings;
-    return settings;
-  }
-
   /**
-   * @returns {HTMLElement};
+   * @returns {HTMLImageElement};
    */
   getElement() {
     if (!this.element) {
@@ -61,6 +45,11 @@ export default class ZoomifyJs {
         ? document.querySelector(this.config.selector)
         : this.config.selector;
     }
+
+    if (!(this.element instanceof HTMLImageElement)) {
+      throw new InvalidHTMLImageElementError();
+    }
+
     return this.element;
   }
 
@@ -72,24 +61,10 @@ export default class ZoomifyJs {
       elm.zoomifyJs = this;
       const btn = document.createElement('button');
       btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
-      btn.style.border = 0;
-      btn.style.background = 'rgba(0,0,0, 0.5)';
-      btn.style.padding = '10px';
-      btn.style.paddingLeft = '15px';
-      btn.style.paddingRight = '15px';
-      btn.style.borderRadius = '20px';
-      btn.style.position = 'absolute';
-      btn.style.bottom = '15px';
-      btn.style.zIndex = 10;
-      btn.style.left = 0;
-      btn.style.right = 0;
-      btn.style.width = 'max-content';
-      btn.style.color = 'white';
-      btn.style.margin = '0 auto';
-      btn.textContent = 'Click to zoom';
-      btn.style.pointerEvents = 'none';
-      elm.parentElement.style.position = 'relative';
+      btn.style.cssText = 'border: 0; background: rgba(0,0,0, 0.5); padding: 10px 15px; border-radius: 20px; position: absolute; bottom: 15px; z-index: 10; left: 0; right: 0; width: max-content; color: white; margin: 0 auto; pointer-events: none;';
+      btn.textContent = this.config.buttonText;
 
+      elm.parentElement.style.position = 'relative';
       elm.parentElement.appendChild(btn);
 
       elm.addEventListener('click', e => {
@@ -135,6 +110,7 @@ export default class ZoomifyJs {
       const zoomImg = new Image();
       zoomImg.src = elm.attributes.zoomify.value;
     }
+
     ['touchstart'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, () => this.enableZoom(!this.zoom));
@@ -142,32 +118,36 @@ export default class ZoomifyJs {
       else {
         elm.addEventListener(name, () => this.enableZoom(true), { passive: true });
       }
-    })
-    ;['mouseenter'].forEach(name => {
+    });
+
+    ['mouseenter'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleMouseEnter);
       }
       else {
         elm.addEventListener(name, this.handleMouseEnter, { passive: true });
       }
-    })
-    ;['mouseout'].forEach(name => {
+    });
+
+    ['mouseout'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleMouseOut);
       }
       else {
         elm.addEventListener(name, this.handleMouseOut, { passive: true });
       }
-    })
-    ;['mousemove', 'touchmove'].forEach(name => {
+    });
+
+    ['mousemove', 'touchmove'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleFocusZoom);
       }
       else {
         elm.addEventListener(name, this.handleFocusZoom);
       }
-    })
-    ;['mouseleave'].forEach(name => {
+    });
+
+    ['mouseleave'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleFocusZoomOut);
       }
@@ -176,8 +156,9 @@ export default class ZoomifyJs {
           passive: true,
         });
       }
-    })
-    ;['touchend'].forEach(name => {
+    });
+
+    ['touchend'].forEach(name => {
       if (detach) {
         elm.removeEventListener(name, this.handleTouchEnd);
       }
@@ -185,9 +166,11 @@ export default class ZoomifyJs {
         elm.addEventListener(name, this.handleTouchEnd);
       }
     });
+
     if (detach) {
       this.focusZoomOut({ target: elm });
       elm.removeEventListener('contextmenu', this.preventContextMenu);
+
       if (
         elm.tagName === 'IMG' &&
             elm.parentElement.tagName === 'PICTURE'
@@ -205,6 +188,7 @@ export default class ZoomifyJs {
     else {
       elm.addEventListener('contextmenu', this.preventContextMenu);
       elm.style.transition = `scale ${this.config.transitionDuration}ms ${this.config.easing}`;
+
       if (
         elm.tagName === 'IMG' &&
             elm.parentElement.tagName === 'PICTURE'
@@ -215,6 +199,7 @@ export default class ZoomifyJs {
         elm.parentElement.style.maxHeight = `${imgRect.height}px`;
         elm.parentElement.style.maxWidth = `${imgRect.width}px`;
       }
+
       elm.zoomifyJs = this;
     }
   }
@@ -228,16 +213,20 @@ export default class ZoomifyJs {
     const t = bounds.top + window.scrollY;
     const h = bounds.height;
     const w = bounds.width;
+
     const maxX = l + w;
     const maxY = t + h;
+
     return (y <= maxY && y >= t) && (x <= maxX && x >= l);
   }
 
   focusZoom(e, force = false) {
     const img = e.target;
     const imgRect = img.getBoundingClientRect();
+
     let pageX = e.pageX;
     let pageY = e.pageY;
+
     if (e.constructor.name === 'TouchEvent') {
       pageX = e.changedTouches[0].pageX;
       pageY = e.changedTouches[0].pageY;
@@ -245,19 +234,24 @@ export default class ZoomifyJs {
 
     // prevent image move when cursor is out of bound
     if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) { return; }
+
     const offsetX = ((pageX - (imgRect.left + window.scrollX)) / imgRect.width) * 100;
     const offsetY = ((pageY - (imgRect.top + window.scrollY)) / imgRect.height) * 100;
+
     img.style.scale = this.config.scale;
     img.style.transformOrigin = `${offsetX}% ${offsetY}%`;
+
     this.zoomedIn = true;
   }
 
   focusZoomOut(e) {
     const img = e.target;
+
     img.style.removeProperty('scale');
     setTimeout(() => {
       img.style.removeProperty('transform-origin');
     }, this.config.transitionDuration);
+
     this.zoomedIn = false;
   }
 
@@ -265,9 +259,12 @@ export default class ZoomifyJs {
     if (!this.zoomedIn) {
       return;
     }
+
     const currentTime = new Date().getTime();
     const tapLength = currentTime - this.lastTap;
+
     clearTimeout(this.timeout);
+
     if (tapLength < 500 && tapLength > 0) {
       e.preventDefault();
       this.focusZoomOut.call(this, e);
@@ -277,6 +274,7 @@ export default class ZoomifyJs {
         clearTimeout(this.timeout);
       }, 500);
     }
+
     this.lastTap = currentTime;
   }
 
