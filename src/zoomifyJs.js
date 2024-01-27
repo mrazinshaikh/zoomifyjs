@@ -208,7 +208,7 @@ export default class ZoomifyJs {
     e.preventDefault();
   }
 
-  static inBoundaries(bounds, x, y) {
+  inBoundaries(bounds, x, y) {
     const l = bounds.left + window.scrollX;
     const t = bounds.top + window.scrollY;
     const h = bounds.height;
@@ -233,7 +233,7 @@ export default class ZoomifyJs {
     }
 
     // prevent image move when cursor is out of bound
-    if (!force && !ZoomifyJs.inBoundaries(imgRect, pageX, pageY)) { return; }
+    if (!force && !this.inBoundaries(imgRect, pageX, pageY)) { return; }
 
     const offsetX = ((pageX - (imgRect.left + window.scrollX)) / imgRect.width) * 100;
     const offsetY = ((pageY - (imgRect.top + window.scrollY)) / imgRect.height) * 100;

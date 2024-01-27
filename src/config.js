@@ -1,7 +1,7 @@
 export default class Config {
-  static ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
+  ALLOWED_OPTIONS = ['selector', 'transitionDuration', 'easing', 'scale', 'clickToZoom', 'buttonText'];
 
-  static DEFAULT_SETTINGS = {
+  DEFAULT_SETTINGS = {
     selector: '.zoomifyJs',
     transitionDuration: 300,
     easing: 'ease-in-out',
@@ -15,7 +15,7 @@ export default class Config {
    * @returns {Object}
    */
   constructor(options) {
-    const settings = Config.DEFAULT_SETTINGS;
+    const settings = this.DEFAULT_SETTINGS;
     const userSettings = options;
 
     switch (typeof options) {
@@ -24,7 +24,7 @@ export default class Config {
         break;
       default:
         for (const option in userSettings) {
-          if (typeof option === 'string' && Config.ALLOWED_OPTIONS.includes(option)) {
+          if (typeof option === 'string' && this.ALLOWED_OPTIONS.includes(option)) {
             settings[option] = userSettings[option];
           }
         }
