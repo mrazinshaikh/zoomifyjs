@@ -68,29 +68,34 @@ export default class ZoomifyJs {
 
     if (this.config.clickToZoom) {
       elm.zoomifyJs = this;
-      const btn = document.createElement('button');
-      btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
-      btn.style.cssText = 'border: 0; background: rgba(0,0,0, 0.5); padding: 10px 15px; border-radius: 20px; position: absolute; bottom: 15px; z-index: 10; left: 0; right: 0; width: max-content; color: white; margin: 0 auto; pointer-events: none;';
-      btn.textContent = this.config.buttonText;
 
-      elm.parentElement.style.position = 'relative';
-      elm.parentElement.appendChild(btn);
-
-      elm.addEventListener('click', e => {
-        const currentZoomedIn = this.zoomedIn;
-        this.zoomedIn = !this.zoomedIn;
-        this.setZoomEvents(currentZoomedIn);
-
-        // to fix image change before zoom
-        this.mouseEnter(e);
-
-        btn.style.display = currentZoomedIn ? 'block' : 'none';
-      });
-
+      this.createClickToButton();
       return;
     }
 
     this.setZoomEvents();
+  }
+
+  createClickToButton() {
+    const elm = this.getElement();
+    const btn = document.createElement('button');
+    btn.setAttribute('id', 'zoomifyJs-click-to-zoom');
+    btn.style.cssText = 'border: 0; background: rgba(0,0,0, 0.5); padding: 10px 15px; border-radius: 20px; position: absolute; bottom: 15px; z-index: 10; left: 0; right: 0; width: max-content; color: white; margin: 0 auto; pointer-events: none;';
+    btn.textContent = this.config.buttonText;
+
+    elm.parentElement.style.position = 'relative';
+    elm.parentElement.appendChild(btn);
+
+    elm.addEventListener('click', e => {
+      const currentZoomedIn = this.zoomedIn;
+      this.zoomedIn = !this.zoomedIn;
+      this.setZoomEvents(currentZoomedIn);
+
+      // to fix image change before zoom
+      this.mouseEnter(e);
+
+      btn.style.display = currentZoomedIn ? 'block' : 'none';
+    });
   }
 
   zoomIn() {
@@ -339,14 +344,19 @@ export default class ZoomifyJs {
   focusZoomOut(e) {
     const img = e.target;
 
-    img.style.removeProperty('scale');
-    img.style.removeProperty('transform');
-    this.touchLogic(true);
+    /**
+     * slight delay for dom action (means removing stylings) after finishing animating.
+     */
     setTimeout(() => {
-      img.style.removeProperty('transform-origin');
-    }, this.config.transitionDuration);
+      img.style.removeProperty('scale');
+      img.style.removeProperty('transform');
+      this.touchLogic(true);
+      setTimeout(() => {
+        img.style.removeProperty('transform-origin');
+      }, this.config.transitionDuration);
 
-    this.zoomedIn = false;
+      this.zoomedIn = false;
+    }, 100);
   }
 
   touchEnd(e) {
@@ -382,11 +392,15 @@ export default class ZoomifyJs {
 
   mouseOut(e) {
     const elm = e.target;
-    setTimeout(() => {
+
+    const transitionEndHandler = () => {
       if (elm.attributes.zoomify && elm.attributes.zoomify.value !== '') {
         elm.attributes.src.value = elm.attributes['data-src'].value;
       }
-    }, this.config.transitionDuration);
+      elm.removeEventListener('transitionend', transitionEndHandler);
+    };
+
+    elm.addEventListener('transitionend', transitionEndHandler, { once: true });
   }
 
   destroy() {
