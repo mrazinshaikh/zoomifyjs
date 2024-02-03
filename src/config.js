@@ -14,7 +14,7 @@ export default class Config {
    * @param {string|Object} options
    * @returns {Object}
    */
-  constructor(options) {
+  constructor(options = {}) {
     const settings = this.DEFAULT_SETTINGS;
     const userSettings = options;
 
