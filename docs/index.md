@@ -12,6 +12,7 @@ Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependen
 4. [Example](#example)
 5. [Contributing](#contributing)
 6. [Roadmap](#roadmap)
+7. [Extra](#extra)
 
 ## Installation
 
@@ -79,7 +80,7 @@ The selector to use as a carousel. Make sure to set proper sizing on image eleme
 Zoom transition duration in milliseconds.
 
 **`easing`** (string)  
-It is like a CSS `transition-timing-function` — describes acceleration curve.
+See [`transition-timing-function`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function) for more information.
 
 **`scale`** (number)  
 The number of zoom scale amount.
@@ -166,7 +167,7 @@ const zoomifyJs = new ZoomifyJs();
 Coming soon...
 ```
 
-## Contributing
+## Contribution
 
 ```
 Coming soon...
@@ -174,12 +175,23 @@ Coming soon...
 
 ## Roadmap
 
-- [x] Register on npm package registry 
-- [] Register on yarn package registry 
-- [] Register for cdn.
-- [] Enable zoom on multiple image with single instance  
-- [] Allow DOMElement for selector value
-- [] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
-- [] Change image source bug fix
-- [] Allow customizing click to zoom button stylings
-- [] Codepen collection for more examples
+- [x] ~~Register on npm package registry~~
+- [ ] Register on yarn package registry
+- [x] ~~Register for cdn.~~ (npmjs provide cdn via unpkg.)
+- [ ] Enable zoom on multiple image with single instance  
+- [x] ~~Allow DOMElement for selector value~~
+- [ ] Image parent element styling improvement (needs basic styling on instance initialization, before clickToZoom)
+- [ ] Change image source bug fix
+- [ ] Allow customizing click to zoom button stylings
+- [ ] Codepen collection for more examples
+- [ ] migrate to ts for better type-hinting and type safety.
+
+## Extra
+
+- Code structure and initial docs on github-pages using jekyll is inspired from [siema](https://pawelgrzybek.github.io/siema/) a carousel plugin.
+
+## License
+
+Made with ❤️
+
+Published under [MIT License](./LICENCE).

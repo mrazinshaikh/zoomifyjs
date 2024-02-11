@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoomify Demo</title>
+    <!--<script src="assets/zoomifyjs.umd.js"></script>-->
+    <!-- With this, we should be able to test the library in local environment -->
+    <script src="../src/zoomifyJs.js"></script>
+</head>
+<body>
+    <h3 id="example-1">Example 1</h3>
+
+    <picture class="image-container">
+        <img src="./assets/car-image-300x300.webp"
+             zoomify="./assets/car-image.webp"
+             alt="Car-Image"
+             class="zoomifyJs"
+             width="400"
+             height="266"
+             loading="lazy"
+        />
+    </picture>
+
+    <h3 id="example-2-click-to-zoom">Example 2 (Click to zoom)</h3>
+
+    <picture class="image-container">
+        <img src="./assets/car-image-300x300.webp"
+             zoomify="./assets/car-image.webp"
+             alt="Car-Image"
+             class="zoomifyJs-click-to-zoom"
+             width="400"
+             height="266"
+             loading="lazy"
+        />
+    </picture>
+
+    <style>
+        /* Example 1 */
+        .zoomifyJs {
+            width: 400px;
+        }
+        /* Example 2 */
+        .image-container:has(.zoomifyJs-click-to-zoom) {
+            display: block;
+            max-width: 400px;
+        }
+
+        .zoomifyJs-click-to-zoom {
+            width: 400px;
+        }
+    </style>
+
+    <script>
+        const zoomifyJs = new ZoomifyJs();
+        const zoomifyJs2 = new ZoomifyJs({selector: '.zoomifyJs-click-to-zoom', clickToZoom: true});
+    </script>
+</body>
+</html>
