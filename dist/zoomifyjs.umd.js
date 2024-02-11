@@ -3,7 +3,7 @@
  * This is a Universal Module Definition (UMD) file for the ZoomifyJs JavaScript library.
  * It can be used in both browser environments and CommonJS/AMD environments.
  *
- * @version 0.1.4
+ * @version 0.2.0
  * @see {@link https://github.com/mrazinshaikh/zoomifyjs/} for the latest version and documentation.
  *
  * @description
