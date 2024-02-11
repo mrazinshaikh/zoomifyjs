@@ -12,7 +12,7 @@ Zoomifyjs is a lightweight (only 1kb gzipped) image zoom plugin with no dependen
 4. [Example](#example)
 5. [Contributing](#contributing)
 6. [Roadmap](#roadmap)
-7. [extra](#extra)
+7. [Extra](#extra)
 
 ## Installation
 
@@ -80,7 +80,7 @@ The selector to use as a carousel. Make sure to set proper sizing on image eleme
 Zoom transition duration in milliseconds.
 
 **`easing`** (string)  
-It is like a CSS `transition-timing-function` — describes acceleration curve.
+See [`transition-timing-function`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function) for more information.
 
 **`scale`** (number)  
 The number of zoom scale amount.

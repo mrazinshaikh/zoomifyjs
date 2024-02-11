@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 export default defineConfig({
   build: {
@@ -7,7 +7,7 @@ export default defineConfig({
       entry: './src/zoomifyJs.js',
       name: 'ZoomifyJs',
     },
-    minify: true,
+    minify: 'terser',
     rollupOptions: {
       output: {
         chunkFileNames: 'zoomifyJs',
@@ -15,5 +15,11 @@ export default defineConfig({
         plugins: [terser()],
       },
     },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+    }
   },
 });
