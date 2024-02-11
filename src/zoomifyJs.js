@@ -93,6 +93,7 @@ export default class ZoomifyJs {
 
       // to fix image change before zoom
       this.mouseEnter(e);
+      this.zoomIn();
 
       btn.style.display = currentZoomedIn ? 'block' : 'none';
     });

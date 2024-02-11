@@ -80,7 +80,7 @@ The selector to use as a carousel. Make sure to set proper sizing on image eleme
 Zoom transition duration in milliseconds.
 
 **`easing`** (string)  
-It is like a CSS `transition-timing-function` — describes acceleration curve.
+See [`transition-timing-function`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function) for more information.
 
 **`scale`** (number)  
 The number of zoom scale amount.
