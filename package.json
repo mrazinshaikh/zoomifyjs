@@ -5,7 +5,7 @@
   "main": "./dist/zoomifyjs.mjs",
   "scripts": {
     "build": "./make.sh",
-    "dev": "vite build --watch",
+    "dev": "NODE_ENV=dev vite build --watch",
     "docs:preview": "generate-md --layout ./docs/_layouts/ --input ./docs/ --output ./output/"
   },
   "devDependencies": {

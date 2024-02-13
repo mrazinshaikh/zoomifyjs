@@ -2,39 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoomify Demo</title>
-    <!--<script src="assets/zoomifyjs.umd.js"></script>-->
+
     <!-- With this, we should be able to test the library in local environment -->
-    <script src="../src/zoomifyJs.js"></script>
-</head>
-<body>
-    <h3 id="example-1">Example 1</h3>
+    <script src="../dist/zoomifyjs.umd.js"></script>
 
-    <picture class="image-container">
-        <img src="./assets/car-image-300x300.webp"
-             zoomify="./assets/car-image.webp"
-             alt="Car-Image"
-             class="zoomifyJs"
-             width="400"
-             height="266"
-             loading="lazy"
-        />
-    </picture>
-
-    <h3 id="example-2-click-to-zoom">Example 2 (Click to zoom)</h3>
-
-    <picture class="image-container">
-        <img src="./assets/car-image-300x300.webp"
-             zoomify="./assets/car-image.webp"
-             alt="Car-Image"
-             class="zoomifyJs-click-to-zoom"
-             width="400"
-             height="266"
-             loading="lazy"
-        />
-    </picture>
-
-    <style>
+     <style>
         /* Example 1 */
         .zoomifyJs {
             width: 400px;
@@ -48,7 +22,64 @@
         .zoomifyJs-click-to-zoom {
             width: 400px;
         }
+        .container {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            picture {
+                width: 100%;
+                max-width: 100%;
+            }
+            .zoomifyJs {
+                width: 100%;
+            }
+            /* Example 2 */
+            .image-container:has(.zoomifyJs-click-to-zoom) {
+                display: block;
+                max-width: 100%;
+            }
+
+            .zoomifyJs-click-to-zoom {
+                width: 100%;
+            }
+            .container {
+                flex-direction: column;
+            }
+            
+        }
     </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h3 id="example-1">Example 1</h3>
+            <picture class="image-container">
+                <img src="./assets/car-image-300x300.webp"
+                    zoomify="./assets/car-image.webp"
+                    alt="Car-Image"
+                    class="zoomifyJs"
+                    width="400"
+                    height="266"
+                    loading="lazy"
+                />
+            </picture>
+        </div>
+
+        <div>
+            <h3 id="example-2-click-to-zoom">Example 2 (Click to zoom)</h3>
+            <picture class="image-container">
+                <img src="./assets/car-image-300x300.webp"
+                    zoomify="./assets/car-image.webp"
+                    alt="Car-Image"
+                    class="zoomifyJs-click-to-zoom"
+                    loading="lazy"
+                />
+            </picture>
+        </div>
+    </div>
+
 
     <script>
         const zoomifyJs = new ZoomifyJs();
