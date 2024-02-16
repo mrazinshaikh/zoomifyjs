@@ -236,14 +236,33 @@ export default class ZoomifyJs {
       currentY = startY;
     }
 
+    function checkIn(bounds, x, y) {
+      const left = bounds.left + window.scrollX;
+      const top = bounds.top + window.scrollY;
+      const height = bounds.height;
+      const width = bounds.width;
+
+      const maxX = left + width;
+      const maxY = top + height;
+
+      return (y <= maxY && y >= top) && (x <= maxX && x >= left);
+    }
+
     function handleTouchMove(event) {
       if (!this.zoomedIn) {
         return;
       }
+
       event.preventDefault();
 
       currentX = event.touches[0].clientX;
       currentY = event.touches[0].clientY;
+
+      const parentRect = elm.parentElement.getBoundingClientRect();
+      if (!checkIn(parentRect, currentX, currentY)) {
+        return;
+      }
+
 
       // Calculate the drag direction
       const deltaX = (currentX - startX) * dragFactor;
@@ -253,32 +272,31 @@ export default class ZoomifyJs {
       const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
       // Determine the direction
-      let direction = '';
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        direction = (deltaX > 0) ? 'right' : 'left';
-      }
-      else {
-        direction = (deltaY > 0) ? 'down' : 'up';
-      }
+      const direction = Math.abs(deltaX) > Math.abs(deltaY) ?
+          (deltaX > 0 ? 'right' : 'left') :
+          (deltaY > 0 ? 'down' : 'up');
 
       console.log(`Direction: ${direction}, Distance: ${distance}`);
 
       const elmRect = elm.getBoundingClientRect();
-      const patentRect = elm.parentElement.getBoundingClientRect();
+      //const parentRect = elm.parentElement.getBoundingClientRect();
       const nextX = translateX + deltaX;
       const nextY = translateY + deltaY;
+
       if (
-        (elmRect.left <= patentRect.left || nextX < translateX) &&
-        (elmRect.right >= patentRect.right || nextX > translateX)
+        (elmRect.left <= parentRect.left || nextX < translateX) &&
+        (elmRect.right >= parentRect.right || nextX > translateX)
       ) {
         translateX = nextX;
       }
+
       if (
-        (elmRect.top <= patentRect.top || nextY < translateY) &&
-        (elmRect.bottom >= patentRect.bottom || nextY > translateY)
+        (elmRect.top <= parentRect.top || nextY < translateY) &&
+        (elmRect.bottom >= parentRect.bottom || nextY > translateY)
       ) {
         translateY = nextY;
       }
+
       // Update the element's position
       elm.style.transform = `translate(${translateX}px, ${translateY}px)`;
 
@@ -307,15 +325,15 @@ export default class ZoomifyJs {
   }
 
   inBoundaries(bounds, x, y) {
-    const l = bounds.left + window.scrollX;
-    const t = bounds.top + window.scrollY;
-    const h = bounds.height;
-    const w = bounds.width;
+    const left = bounds.left + window.scrollX;
+    const top = bounds.top + window.scrollY;
+    const height = bounds.height;
+    const width = bounds.width;
 
-    const maxX = l + w;
-    const maxY = t + h;
+    const maxX = left + width;
+    const maxY = top + height;
 
-    return (y <= maxY && y >= t) && (x <= maxX && x >= l);
+    return (y <= maxY && y >= top) && (x <= maxX && x >= left);
   }
 
   focusZoom(e, force = false) {
