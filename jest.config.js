@@ -1,4 +1,5 @@
 export default {
   // ...other configurations
-  testEnvironment: 'node'
+  testEnvironment: 'node',
+  transform: {}
 };
